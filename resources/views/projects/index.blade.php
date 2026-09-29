@@ -87,11 +87,8 @@
 
                 <div class="row g-4">
                     <div class="col-12 col-sm-6 col-lg-4">
-
                         <a href="{{ route('projects.create') }}" class="text-decoration-none" >
-
                             <div class="card border-0 shadow-sm h-100">
-
                                 <div class="card-body d-flex flex-column justify-content-center align-items-center text-center py-5">
 
                                     <i class="bi bi-plus-circle display-4 text-primary"></i>
