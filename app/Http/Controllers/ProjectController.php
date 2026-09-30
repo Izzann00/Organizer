@@ -45,12 +45,31 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'code' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'category_id' => 'required|exists:categories,id',
-        ]);
+        $data = $request->validate(
+            [
+                'code' => 'required|string|max:255',
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+                'description' => 'required|string|max:500',
+                'category_id' => 'required|exists:categories,id',
+            ],
+            [
+                'code.required' => 'El codi del projecte és obligatori.',
+                'code.string' => 'El codi del projecte ha de ser text.',
+                'code.max' => 'El codi del projecte no pot superar els 255 caràcters.',
+
+                'name.required' => 'El nom del projecte és obligatori.',
+                'name.string' => 'El nom del projecte ha de ser text.',
+                'name.max' => 'El nom del projecte no pot superar els 255 caràcters.',
+                'name.regex' => 'El nom del projecte només pot contenir lletres i espais.',
+
+                'description.required' => 'La descripció del projecte és obligatòria.',
+                'description.string' => 'La descripció del projecte ha de ser text.',
+                'description.max' => 'La descripció no pot superar els 500 caràcters.',
+
+                'category_id.required' => 'La categoria és obligatòria.',
+                'category_id.exists' => 'La categoria seleccionada no és vàlida.',
+            ]
+        );
 
         $data['owner_id'] = Auth::id();
 
@@ -112,12 +131,31 @@ class ProjectController extends Controller
                 ->with('error', 'Aquest projecte està tancat.');
         }
 
-        $data = $request->validate([
-            'code' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'category_id' => 'required|exists:categories,id',
-        ]);
+        $data = $request->validate(
+            [
+                'code' => 'required|string|max:255',
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+                'description' => 'required|string|max:500',
+                'category_id' => 'required|exists:categories,id',
+            ],
+            [
+                'code.required' => 'El codi del projecte és obligatori.',
+                'code.string' => 'El codi del projecte ha de ser text.',
+                'code.max' => 'El codi del projecte no pot superar els 255 caràcters.',
+
+                'name.required' => 'El nom del projecte és obligatori.',
+                'name.string' => 'El nom del projecte ha de ser text.',
+                'name.max' => 'El nom del projecte no pot superar els 255 caràcters.',
+                'name.regex' => 'El nom del projecte només pot contenir lletres i espais.',
+
+                'description.required' => 'La descripció del projecte és obligatòria.',
+                'description.string' => 'La descripció del projecte ha de ser text.',
+                'description.max' => 'La descripció no pot superar els 500 caràcters.',
+
+                'category_id.required' => 'La categoria és obligatòria.',
+                'category_id.exists' => 'La categoria seleccionada no és vàlida.',
+            ]
+        );
 
         $this->projectRepository->update($id, $data);
 
@@ -140,9 +178,15 @@ class ProjectController extends Controller
                 ->with('error', 'Aquest projecte està tancat.');
         }
 
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-        ]);
+        $data = $request->validate(
+            [
+                'user_id' => 'required|exists:users,id',
+            ],
+            [
+                'user_id.required' => 'Has de seleccionar un usuari.',
+                'user_id.exists' => 'L\'usuari seleccionat no és vàlid.',
+            ]
+        );
 
         $this->projectRepository->addUser($id, $data['user_id']);
 

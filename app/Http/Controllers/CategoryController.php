@@ -46,10 +46,22 @@ class CategoryController extends Controller
             abort(403);
         }
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'color' => 'required|string|max:50',
-        ]);
+        $data = $request->validate(
+            [
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+                'color' => 'required|string|max:50',
+            ],
+            [
+                'name.required' => 'El nom de la categoria és obligatori.',
+                'name.string' => 'El nom de la categoria ha de ser text.',
+                'name.max' => 'El nom de la categoria no pot superar els 255 caràcters.',
+                'name.regex' => 'El nom de la categoria només pot contenir lletres i espais.',
+
+                'color.required' => 'El color és obligatori.',
+                'color.string' => 'El color ha de ser vàlid.',
+                'color.max' => 'El color no pot superar els 50 caràcters.',
+            ]
+        );
 
         $this->categoryRepository->create($data);
 
@@ -75,10 +87,22 @@ class CategoryController extends Controller
             abort(403);
         }
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'color' => 'required|string|max:50',
-        ]);
+        $data = $request->validate(
+            [
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+                'color' => 'required|string|max:50',
+            ],
+            [
+                'name.required' => 'El nom de la categoria és obligatori.',
+                'name.string' => 'El nom de la categoria ha de ser text.',
+                'name.max' => 'El nom de la categoria no pot superar els 255 caràcters.',
+                'name.regex' => 'El nom de la categoria només pot contenir lletres i espais.',
+
+                'color.required' => 'El color és obligatori.',
+                'color.string' => 'El color ha de ser vàlid.',
+                'color.max' => 'El color no pot superar els 50 caràcters.',
+            ]
+        );
 
         $this->categoryRepository->update($id, $data);
 

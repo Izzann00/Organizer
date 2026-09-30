@@ -55,11 +55,26 @@ class TaskController extends Controller
                 ->with('error', 'Aquest projecte està tancat.');
         }
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'due_date' => 'required|date',
-        ]);
+        $data = $request->validate(
+            [
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+                'description' => 'required|string|max:500',
+                'due_date' => 'required|date',
+            ],
+            [
+                'name.required' => 'El nom de la tasca és obligatori.',
+                'name.string' => 'El nom de la tasca ha de ser text.',
+                'name.max' => 'El nom de la tasca no pot superar els 255 caràcters.',
+                'name.regex' => 'El nom de la tasca només pot contenir lletres i espais.',
+
+                'description.required' => 'La descripció de la tasca és obligatòria.',
+                'description.string' => 'La descripció de la tasca ha de ser text.',
+                'description.max' => 'La descripció no pot superar els 500 caràcters.',
+
+                'due_date.required' => 'La data límit és obligatòria.',
+                'due_date.date' => 'La data límit no és vàlida.',
+            ]
+        );
 
         $data['project_id'] = $projectId;
         $data['user_id'] = Auth::id();
@@ -106,12 +121,30 @@ class TaskController extends Controller
                 ->with('error', 'Aquest projecte està tancat.');
         }
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'due_date' => 'required|date',
-            'status' => 'required|in:open,closed',
-        ]);
+        $data = $request->validate(
+            [
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+                'description' => 'required|string|max:500',
+                'due_date' => 'required|date',
+                'status' => 'required|in:open,closed',
+            ],
+            [
+                'name.required' => 'El nom de la tasca és obligatori.',
+                'name.string' => 'El nom de la tasca ha de ser text.',
+                'name.max' => 'El nom de la tasca no pot superar els 255 caràcters.',
+                'name.regex' => 'El nom de la tasca només pot contenir lletres i espais.',
+
+                'description.required' => 'La descripció de la tasca és obligatòria.',
+                'description.string' => 'La descripció de la tasca ha de ser text.',
+                'description.max' => 'La descripció no pot superar els 500 caràcters.',
+
+                'due_date.required' => 'La data límit és obligatòria.',
+                'due_date.date' => 'La data límit no és vàlida.',
+
+                'status.required' => 'L\'estat de la tasca és obligatori.',
+                'status.in' => 'L\'estat de la tasca no és vàlid.',
+            ]
+        );
 
         $this->taskRepository->update($id, $data);
 

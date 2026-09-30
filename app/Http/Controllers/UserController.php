@@ -47,12 +47,32 @@ class UserController extends Controller
             abort(403);
         }
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:6',
-            'role' => 'required|in:admin,operator',
-        ]);
+        $data = $request->validate(
+            [
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+                'email' => 'required|email|max:255|unique:users,email',
+                'password' => 'required|string|min:6',
+                'role' => 'required|in:admin,operator',
+            ],
+            [
+                'name.required' => 'El nom de l\'usuari és obligatori.',
+                'name.string' => 'El nom de l\'usuari ha de ser text.',
+                'name.max' => 'El nom de l\'usuari no pot superar els 255 caràcters.',
+                'name.regex' => 'El nom de l\'usuari només pot contenir lletres i espais.',
+
+                'email.required' => 'El correu electrònic és obligatori.',
+                'email.email' => 'El correu electrònic no és vàlid.',
+                'email.max' => 'El correu electrònic no pot superar els 255 caràcters.',
+                'email.unique' => 'Aquest correu electrònic ja està registrat.',
+
+                'password.required' => 'La contrasenya és obligatòria.',
+                'password.string' => 'La contrasenya ha de ser text.',
+                'password.min' => 'La contrasenya ha de tenir com a mínim 6 caràcters.',
+
+                'role.required' => 'El rol és obligatori.',
+                'role.in' => 'El rol seleccionat no és vàlid.',
+            ]
+        );
 
         $data['password'] = Hash::make($data['password']);
 
@@ -80,11 +100,27 @@ class UserController extends Controller
             abort(403);
         }
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
-            'role' => 'required|in:admin,operator',
-        ]);
+        $data = $request->validate(
+            [
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+                'email' => 'required|email|max:255|unique:users,email,' . $id,
+                'role' => 'required|in:admin,operator',
+            ],
+            [
+                'name.required' => 'El nom de l\'usuari és obligatori.',
+                'name.string' => 'El nom de l\'usuari ha de ser text.',
+                'name.max' => 'El nom de l\'usuari no pot superar els 255 caràcters.',
+                'name.regex' => 'El nom de l\'usuari només pot contenir lletres i espais.',
+
+                'email.required' => 'El correu electrònic és obligatori.',
+                'email.email' => 'El correu electrònic no és vàlid.',
+                'email.max' => 'El correu electrònic no pot superar els 255 caràcters.',
+                'email.unique' => 'Aquest correu electrònic ja està registrat.',
+
+                'role.required' => 'El rol és obligatori.',
+                'role.in' => 'El rol seleccionat no és vàlid.',
+            ]
+        );
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
